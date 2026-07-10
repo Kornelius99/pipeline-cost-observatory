@@ -1,0 +1,25 @@
+# Render Blueprint - deploy pipeline-cost-observatory with one click.
+# Fork this repo, connect it to your own Render account, then go to
+# https://dashboard.render.com/blueprints and click "New Blueprint Instance".
+# This provisions a free-tier Postgres database and the Streamlit dashboard
+# web service, wired together automatically. You need your own Render
+# account - this file only describes the infrastructure, it does not create
+# any account or deploy anything by itself.
+
+databases:
+  - name: pipeline-cost-observatory-db
+    plan: free
+    databaseName: pipeline_cost
+    user: pipeline_cost
+
+services:
+  - type: web
+    name: pipeline-cost-observatory
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pipeline-cost-observatory-db
+          property: connectionString

@@ -1,0 +1,32 @@
+# Default values for pipeline-cost-observatory.
+# This chart deploys ONLY the dashboard/app.py Streamlit service.
+# Point databaseUrlSecretName at a Secret containing a DATABASE_URL key for
+# your own managed Postgres (RDS, Cloud SQL, Azure Database for Postgres,
+# etc.) - this chart does not attempt to run a stateful Postgres for you.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/kornelius99/pipeline-cost-observatory
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8501
+
+databaseUrlSecretName: pipeline-cost-observatory-db
+databaseUrlSecretKey: DATABASE_URL
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+ingress:
+  enabled: false
+  className: ""
+  host: pipeline-cost-observatory.example.com

@@ -21,12 +21,11 @@ class RunCost:
     anomaly_score: Optional[float] = None
 
 
-def estimate_run_cost(duration_sec: float, executor_type: str) -> RunCost | None:
+def estimate_run_cost(duration_sec: float, executor_type: str) -> float:
     """Estimate the $ cost of a single run given its duration and executor type."""
     rate = get_rate(executor_type)
     hours = duration_sec / 3600.0
-    cost = round(hours * rate.usd_per_hour, 4)
-    return cost
+    return round(hours * rate.usd_per_hour, 4)
 
 
 def attribute_cost(run_id: int, pipeline_name: str, duration_sec: float, executor_type: str) -> RunCost:
